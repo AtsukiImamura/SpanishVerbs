@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-light text-dark w-100">
         <SearchBox></SearchBox>
     </div>
 </template>

@@ -10,7 +10,8 @@ export default new Vuex.Store({
         count: 0,
         verbs: [],
         canDisplaySearchResult: true,
-        selectedWordId: ''
+        selectedWordId: '',
+        selectedWordList: []
     },
     mutations: {
         increment(state){
@@ -29,6 +30,31 @@ export default new Vuex.Store({
         },
         selectWord(state, id){
             state.selectedWordId = id
+            state.selectedWordList = state.verbs
+                                        .filter(v => v.word_id == id)
+                                        .map(v => {
+                                            switch(v.person){
+                                                case 0:
+                                                    v.person_disp = 'yo'
+                                                    break;
+                                                case 1:
+                                                v.person_disp = 'tu'
+                                                    break;
+                                                case 2:
+                                                v.person_disp = 'utd'
+                                                    break;
+                                                case 3:
+                                                v.person_disp = 'nos'
+                                                    break;
+                                                case 4:
+                                                v.person_disp = 'vos'
+                                                    break;
+                                                case 5:
+                                                v.person_disp = 'uds'
+                                                    break;
+                                            }
+                                            return v
+                                        })
         }
     },
     getters: {
