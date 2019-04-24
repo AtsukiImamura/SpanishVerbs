@@ -1,11 +1,11 @@
 <template>
-    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12 pl-1 pr-1 mt-md-3 mt-2" :class="{'d-none': wordList.length == 0}">
+    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-12 pl-1 pr-1 mt-md-3 mt-2" :class="{'d-none': wordList.length == 0}">
         <div class="card" :class="{'is-hidden': wordList.length == 0}">
             <h5 class="card-header">{{ title }}</h5>
-            <div class="card-body pl-3 pt-0 pb-0">
+            <div class="card-body pl-1 pt-0 pb-0">
                 <div v-for="(w, index) in wordList" class="mt-2 mb-2 d-flex" :class="{'border-top': index > 0}">
-                    <div class="col-2 pr-2">{{ w.person_disp }}</div>
-                    <div class="col-10">{{ w.word }}</div>
+                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-3 col-3 px-xl-2">{{ w.person_disp }}</div>
+                    <div class="col-xl-9 col-lg-9 px-xl-2">{{ w.word }}</div>
                 </div>
             </div>
         </div>

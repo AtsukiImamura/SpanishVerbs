@@ -3,7 +3,7 @@
         <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 mx-2">
             <div id="keyword-area" class="form-group col-12">
                 <label for="verb-key-word">keyword</label>
-                <input id="verb-key-word" class="form-control" type="text" v-model="keyWord"
+                <input id="verb-key-word" class="form-control" type="text" v-model="keyWord" autocomplete="off" placeholder="keyword"
                     v-on:keydown.down.exact="selectDown()"
                     v-on:keydown.up.exact="selectUp()"
                     v-on:keydown.enter.exact="selectWord()"
