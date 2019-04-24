@@ -10,7 +10,7 @@ module.exports = {
     },
     devServer: {
         // webpackの扱わないファイル(HTMLや画像など)が入っているディレクトリ
-        contentBase: path.resolve(__dirname, 'public')
+        contentBase: path.resolve(__dirname, 'dest')
     },
     module: {
         rules: [

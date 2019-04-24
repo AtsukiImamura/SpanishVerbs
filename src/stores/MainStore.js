@@ -111,7 +111,7 @@ const testVerbs = [
 
 export default new Vuex.Store({
     state: {
-        verbs: testVerbs,
+        verbs: [], //testVerbs,
         canDisplaySearchResult: true,
         selectedWordId: '',
         selectedWordList: [],

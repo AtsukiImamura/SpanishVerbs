@@ -2,11 +2,11 @@
     <div>
         <div id="mobile-menu-btn-wrap" class="justify-content-end mt-1" :class="{'d-none' : isOpen, 'd-flex' : !isOpen}">
             <!--<div id="m-open-menu-btn" class="" @click="openMobileMenu()"></div> -->
-            <img src="m-menu.svg" alt="openMobileMenu" width="42px" height="42px" @click="openMobileMenu()" />
+            <img src="/m-menu.svg" alt="openMobileMenu" width="42px" height="42px" @click="openMobileMenu()" />
         </div>
         <div id="mobile-menu" class="position-fixed" :class="{'d-none' : !isOpen}">
             <div class="d-flex justify-content-end">
-                <img src="m-close.svg" width="42px" height="42px" class=" m-2" value=" Close " @click="closeMobileMenu()"></input>
+                <img src="/m-close.svg" width="42px" height="42px" class=" m-2" value=" Close " @click="closeMobileMenu()"></input>
             </div>
             <div>
                 <div id="m-user-info" class="row w-100"  :class="{'d-none': !userAuthenticated}">

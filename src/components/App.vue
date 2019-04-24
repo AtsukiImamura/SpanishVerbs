@@ -3,6 +3,7 @@
     <Header id="app-header" class="position-fixed"></Header>
     <Header></Header>
     <div id="main-contents">
+      <router-link to="/config">Config</router-link>
       <div>
         <!-- 見出し表示エリア -->
       </div>
