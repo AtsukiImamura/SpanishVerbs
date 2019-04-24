@@ -1,8 +1,8 @@
 <template>
-    <div class="row d-flex justify-content-center bg-light text-dark" @click="closeResult()">
-        <div class="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-12 mx-2">
+    <div @click="closeResult()">
+        <div class="col-xl-7 col-lg-10 col-md-12 col-sm-12 col-12 mx-2">
             <div id="keyword-area" class="form-group col-12">
-                <label for="verb-key-word">keyword</label>
+                <label for="verb-key-word">keyword {{ this.test }}</label>
                 <input id="verb-key-word" class="form-control" type="text" v-model="keyWord" autocomplete="off" placeholder="keyword"
                     v-on:keydown.down.exact="selectDown()"
                     v-on:keydown.up.exact="selectUp()"
@@ -18,7 +18,7 @@
     </div>
 </template>
 
-<<script>
+<script>
 export default {
     data: function(){
         return{
@@ -61,6 +61,10 @@ export default {
         },
         canDisplayResult: function(){
             return this.$store.getters.canDisplaySearchResult;
+        },
+        test(){
+            console.log('==== test changed')
+            return this.$store.state.test
         }
     },
     watch:{
