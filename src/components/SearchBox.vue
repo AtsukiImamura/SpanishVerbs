@@ -11,7 +11,7 @@
             </div>
             <div id="result-area" class="position-absolute col-12">
                 <ul v-if="hasResult && this.canDisplayResult" class="list-group">
-                    <li class="list-group-item p-1" :class="{'bg-dark text-white': index == selectedIndex}" v-for="(res, index) in resultList" :key="index">{{ res.word }}</li>
+                    <li class="list-group-item p-1" :class="{'bg-dark text-white': index == selectedIndex}" v-for="(res, index) in resultList" :key="index" @touch="directSelectWord(index)" @click="directSelectWord(index)" >{{ res.word }}</li>
                 </ul>
             </div>
         </div>
@@ -30,21 +30,25 @@ export default {
     methods: {
         onKeyDown: function(e){
         },
+        /** 候補リストを非表示にする */
         closeResult: function(){
             this.$store.dispatch('prohibitDisplaySearchResult')
         },
+        /** 候補の中の現在の選択位置を下に一つ下げる */
         selectDown: function(e){
             this.selectedIndex = this.selectedIndex < this.resultList.length - 1 ? this.selectedIndex + 1 : this.selectedIndex
             if(e){
                 e.preventDefault()
             }
         },
+        /** 候補の中の現在の選択位置を上に一つ上げる */
         selectUp: function(e){
             this.selectedIndex = this.selectedIndex > 0 ? this.selectedIndex - 1 : this.selectedIndex
             if(e){
                 e.preventDefault()
             }
         },
+        /** 現在の選択位置に基づいて単語を選択する */
         selectWord: function(){
             if(this.selectedIndex < 0 || this.selectedIndex >= this.resultList.length){
                 return;
@@ -53,6 +57,12 @@ export default {
             // this.keyWord = this.resultList[this.selectedIndex].word
             this.$store.commit('selectWord', this.resultList[this.selectedIndex].word_id)
             this.$store.dispatch('prohibitDisplaySearchResult')
+            this.selectedIndex = -1
+        },
+        /** クリック・タッチなどで選択した場合 */
+        directSelectWord: function(index){
+            this.selectedIndex = index
+            this.selectWord()
         }
     },
     computed:{
@@ -67,6 +77,7 @@ export default {
         }
     },
     watch:{
+        /** 入力されたキーワードを監視して、変化があったときに候補リストを更新する */
         keyWord: function(val){
             this.resultList = this.$store.getters.search(val)
             this.$store.dispatch('allowDisplaySearchResult')
