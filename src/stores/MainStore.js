@@ -133,31 +133,7 @@ export default new Vuex.Store({
         selectWord(state, verb){
             let id = verb.word_id
             state.selectedVerb = verb
-            state.selectedVerbList = state.verbs
-                                        .filter(v => v.word_id == id)
-                                        .map(v => {
-                                            switch(v.person){
-                                                case 0:
-                                                    v.person_disp = 'yo'
-                                                    break
-                                                case 1:
-                                                    v.person_disp = 'tu'
-                                                    break
-                                                case 2:
-                                                    v.person_disp = 'utd'
-                                                    break
-                                                case 3:
-                                                    v.person_disp = 'nos'
-                                                    break
-                                                case 4:
-                                                    v.person_disp = 'vos'
-                                                    break
-                                                case 5:
-                                                    v.person_disp = 'uds'
-                                                    break
-                                            }
-                                            return v
-                                        })
+            state.selectedVerbList = state.verbs.filter(v => v.word_id == id)
         },
         setUser(state, user){
             state.user = user
@@ -169,6 +145,9 @@ export default new Vuex.Store({
     getters: {
         /* 単語を検索 */
         search: (state) => (keyword) => {
+            if(!state.authenticated){
+                return []
+            }
             // 先頭にマッチするもの
             let startWith = state.verbs.filter(v => v.word.startsWith(keyword))
             if(startWith.length >= VERB_RESULT_NUM){
@@ -221,6 +200,8 @@ export default new Vuex.Store({
                 context.commit('setUser', user)
                 if(!user) return
                 context.dispatch('initVerbsIfNot')
+                context.commit('authenticated', true)
+                context.dispatch("incrementUserCount")
             })
         },
         /** 認証されているか */
@@ -231,7 +212,6 @@ export default new Vuex.Store({
             var provider = new firebase.auth.GoogleAuthProvider()
             firebase.auth().signInWithPopup(provider).then(function (result) {
                 context.commit('authenticated', result.user != null)
-                context.dispatch("incrementUserCount")
             }).catch(function (error) {
                 console.log('loginWithGoogle ERROR')
                 console.log(error.message)

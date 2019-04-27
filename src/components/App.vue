@@ -27,6 +27,7 @@
           <VerbBlock class="col" v-bind:title="'接続法 過去'" v-bind:type="7" color-class="color-fictive"></VerbBlock>
         </div>
       </div>
+      <InitLoginForm :class="{'d-none': isAuthenticated}"></InitLoginForm>
     </div>
   </div>
 </template>
@@ -34,9 +35,11 @@
 <script>
 import Header from './Header.vue'
 import VerbBlock from './VerbBlock.vue'
+import InitLoginForm from './InitLoginForm.vue'
+
 export default {
   components: {
-    Header,VerbBlock
+    Header,VerbBlock,InitLoginForm
   },
   mounted: function(){
     this.$store.dispatch("init")
@@ -44,6 +47,9 @@ export default {
   computed: {
     selectedWordHeader: function(){
       return this.$store.state.selectedVerbList.filter(v => v.type == 10)
+    },
+    isAuthenticated(){
+      return this.$store.state.authenticated
     }
   },
   methods: {

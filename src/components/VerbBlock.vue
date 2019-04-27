@@ -25,6 +25,29 @@ export default {
         },
         wordList: function(){
             return this.$store.state.selectedVerbList.filter(v => v.type == this.type)
+                                        .map(v => {
+                                            switch(v.person){
+                                                case 0:
+                                                    v.person_disp = 'yo'
+                                                    break
+                                                case 1:
+                                                    v.person_disp = 'tu'
+                                                    break
+                                                case 2:
+                                                    v.person_disp = 'utd'
+                                                    break
+                                                case 3:
+                                                    v.person_disp = 'nos'
+                                                    break
+                                                case 4:
+                                                    v.person_disp = 'vos'
+                                                    break
+                                                case 5:
+                                                    v.person_disp = 'uds'
+                                                    break
+                                            }
+                                            return v
+                                        })
         }
     }
 }

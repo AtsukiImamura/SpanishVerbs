@@ -1,6 +1,6 @@
 <template>
     <div @click="closeResult()">
-        <div class="col-xl-12 col-lg-10 col-md-12 col-sm-12 col-12 mx-2 pr-1 pl-1">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mx-2 pr-1 pl-1">
             <div id="keyword-area" class="form-group col-12 p-sm-2 p-1 my-2">
                 <label for="verb-key-word" class="d-none">keyword {{ this.test }}</label>
                 <input id="verb-key-word" class="form-control" type="text" v-model="keyWord" autocomplete="off" placeholder="keyword"

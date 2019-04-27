@@ -56,11 +56,9 @@ export default {
             this.$store.dispatch('logout');
         },
         openMobileMenu(){
-            console.log('open!')
             this.isOpen = true
         },
         closeMobileMenu(){
-            console.log('close!')
             this.isOpen = false
         }
     }

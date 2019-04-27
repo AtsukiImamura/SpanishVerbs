@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img height="65px" alt="title" src="title.svg" />
+        <img style="width: 100%; max-height: 58px;" alt="title" src="title.svg" />
     </div>
 </template>
 

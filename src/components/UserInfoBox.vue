@@ -5,8 +5,8 @@
                 <img alt="user-profile-photo" :src="userPhotoURL" />
             </div>
             <div class="d-flex align-items-center mb-2">
-                <span>{{ userDispName }}</span>
-                <input id="logout-btn" type="button" class="mx-1 btn" value="Logout" @click="logout()" />
+                <span class="d-none">{{ userDispName }}</span>
+                <input id="logout-btn" type="button" class="mx-1 mt-1 btn" value="Logout" @click="logout()" />
             </div>
         </div>
         <div id="login-area" :class="{'d-none': this.userAuthenticated}">
@@ -52,8 +52,8 @@ export default {
 }
 
 #user-info{
-    border: 1px solid #ffffff;
-    background-color: #f5f5fb;
+    /* border: 1px solid #ffffff;
+    background-color: #f5f5fb; */
 }
 
 $userPhotoSize: 42px;
