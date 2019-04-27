@@ -3,6 +3,8 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const basicUtil = require('../utils/BasicUtil.js')
+const firebaseUtil = require('../utils/FirebaseUtil.js')
 /** 検索結果候補の表示数 */
 const VERB_RESULT_NUM = 15
 
@@ -134,6 +136,7 @@ export default new Vuex.Store({
             let id = verb.word_id
             state.selectedVerb = verb
             state.selectedVerbList = state.verbs.filter(v => v.word_id == id)
+            firebaseUtil.logSearchVerb(state.user, verb)
         },
         setUser(state, user){
             state.user = user
@@ -169,6 +172,7 @@ export default new Vuex.Store({
     actions: {
         init(context){
             context.dispatch('initUserInfo')
+            firebaseUtil.logAccess()
         },
         /** 動詞リストを全件取得して保持する TODO: firebaseのクエリがいい感じになったらその都度検索するようにしたい */
         initVerbs(context){
@@ -198,10 +202,14 @@ export default new Vuex.Store({
         initUserInfo(context){
             firebase.auth().onAuthStateChanged(function(user) {
                 context.commit('setUser', user)
-                if(!user) return
+                console.log(user)
+                if(!user) {
+                    return
+                }
                 context.dispatch('initVerbsIfNot')
                 context.commit('authenticated', true)
-                context.dispatch("incrementUserCount")
+                firebaseUtil.incrementUserCount(context.state.user)
+                firebaseUtil.logUserLogin(user)
             })
         },
         /** 認証されているか */
@@ -218,38 +226,8 @@ export default new Vuex.Store({
             })
         },
         logout(context) {
+            firebaseUtil.logUserLogout(context.state.user)
             firebase.auth().signOut().then(() => context.commit('authenticated', false))
         },
-        /** ユーザーのログインを記録する */
-        incrementUserCount(context){
-            let user = context.state.user
-            if(!user){
-                return
-            }
-            firebase.database().ref("users/"+user.uid).once("value").then(function(snapshot){
-                // ユーザーのログインデータがない場合は作ってからやり直す
-                if(!snapshot.exists()){
-                    context.dispatch("insertUserInfo", user)
-                    context.dispatch("incrementUserCount")
-                    return
-                }
-                // カウントをインクリメントして挿入
-                let userInfo = snapshot.val();
-                userInfo.count = userInfo.count + 1
-                context.dispatch("insertUserCount",{
-                    uid: user.uid,
-                    userInfo: userInfo
-                })
-            })
-
-        },
-        /** 新規ユーザーログインデータを挿入する */
-        insertUserInfo(context, user){
-            firebase.database().ref("users/"+user.uid).set({ name: user.displayName, count: 0});
-        },
-        /** ユーザーログインデータを挿入する */
-        insertUserCount(context, payload){
-            firebase.database().ref("users/"+payload.uid).set(payload.userInfo);
-        }
     }
 })

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import App from '../components/App.vue'
-import Config from '../components/Config.vue'
+import Admin from '../components/Admin.vue'
 
 Vue.use(Router)
 
@@ -13,8 +13,8 @@ export default new Router({
       component: App
     },
     {
-      path: '/config',
-      component: Config
+      path: '/admin',
+      component: Admin
     }
   ]
 })
