@@ -1,8 +1,8 @@
 <template>
     <div @click="closeResult()">
-        <div class="col-xl-7 col-lg-10 col-md-12 col-sm-12 col-12 mx-2 pr-1 pl-3">
-            <div id="keyword-area" class="form-group col-12 p-sm-2 p-1">
-                <label for="verb-key-word">keyword {{ this.test }}</label>
+        <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 col-12 mx-2 pr-1 pl-3">
+            <div id="keyword-area" class="form-group col-12 p-sm-2 p-1 my-2">
+                <label for="verb-key-word" class="d-none">keyword {{ this.test }}</label>
                 <input id="verb-key-word" class="form-control" type="text" v-model="keyWord" autocomplete="off" placeholder="keyword"
                     v-on:keydown.down.exact="selectDown()"
                     v-on:keydown.up.exact="selectUp()"

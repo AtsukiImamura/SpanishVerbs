@@ -1,7 +1,6 @@
 <template>
     <div>
-        <div id="mobile-menu-btn-wrap" class="justify-content-end mt-1" :class="{'d-none' : isOpen, 'd-flex' : !isOpen}">
-            <!--<div id="m-open-menu-btn" class="" @click="openMobileMenu()"></div> -->
+        <div id="mobile-menu-btn-wrap" class="justify-content-center align-items-center mt-2 pl-3" :class="{'d-none' : isOpen, 'd-flex' : !isOpen}">
             <img src="/m-menu.svg" alt="openMobileMenu" width="42px" height="42px" @click="openMobileMenu()" />
         </div>
         <div id="mobile-menu" class="position-fixed" :class="{'d-none' : !isOpen}">
@@ -80,6 +79,7 @@ export default {
     }
 }
 #m-user-info{
+
     img{
         width: 48px;
     }
@@ -101,6 +101,7 @@ export default {
     height: 100vh;
     left: 15vw;
     top: 0px;
+    z-index: 999;
     /* background-color: rgba(180, 180, 180); */
     background-color: rgb(240, 240, 240);
 }
