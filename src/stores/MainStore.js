@@ -113,8 +113,8 @@ export default new Vuex.Store({
     state: {
         verbs: [], //testVerbs,
         canDisplaySearchResult: true,
-        selectedWordId: '',
-        selectedWordList: [],
+        selectedVerb: '',
+        selectedVerbList: [],
         user: null,
         authenticated: false
     },
@@ -130,9 +130,10 @@ export default new Vuex.Store({
             state.canDisplaySearchResult = false
         },
         /** 単語を選択する */
-        selectWord(state, id){
-            state.selectedWordId = id
-            state.selectedWordList = state.verbs
+        selectWord(state, verb){
+            let id = verb.word_id
+            state.selectedVerb = verb
+            state.selectedVerbList = state.verbs
                                         .filter(v => v.word_id == id)
                                         .map(v => {
                                             switch(v.person){

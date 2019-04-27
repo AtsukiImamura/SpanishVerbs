@@ -55,7 +55,7 @@ export default {
             }
             //TODO: 選択した単語を入れたい
             // this.keyWord = this.resultList[this.selectedIndex].word
-            this.$store.commit('selectWord', this.resultList[this.selectedIndex].word_id)
+            this.$store.commit('selectWord', this.resultList[this.selectedIndex])
             this.$store.dispatch('prohibitDisplaySearchResult')
             this.selectedIndex = -1
         },
