@@ -10,13 +10,13 @@
                     <MobileMenu class="col-3 offset-2"></MobileMenu>
                 </div>
             </div>
-            <div class="col-xl-3 col-lg-3 col-md-4 d-md-block d-none">
+            <div class="col-xl-2 offset-xl-1 col-lg-3 col-md-4 d-md-block d-none">
                 <Title></Title>
             </div>
-            <div class="col-xl-5 col-lg-6 col-md-5 col-sm-9 col-11 p-sm-1 p-1">
+            <div class="col-xl-4 offset-xl-1 col-lg-6 col-md-5 col-sm-9 col-11 p-sm-1 p-1">
                 <SearchBox class="row d-flex justify-content-center bg-light text-dark"></SearchBox>
             </div>
-            <UserInfoBox class="col-xl-3 col-lg-3 col-md-3 col-sm-3 d-none d-sm-flex"></UserInfoBox>
+            <UserInfoBox class="col-xl-2 col-lg-3 col-md-3 col-sm-3 d-none d-sm-flex"></UserInfoBox>
         </div>
     <!--</div>-->
 </template>

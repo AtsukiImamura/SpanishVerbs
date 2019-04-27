@@ -193,7 +193,7 @@ export default new Vuex.Store({
         /** 動詞リストを全件取得して保持する TODO: firebaseのクエリがいい感じになったらその都度検索するようにしたい */
         initVerbs(context){
             // dbアクセスして全権取得
-            firebase.database().ref().once("value").then(function(snapshot){
+            firebase.database().ref("verbs").once("value").then(function(snapshot){
                 if(!snapshot.exists()){
                     return
                 }
@@ -230,6 +230,7 @@ export default new Vuex.Store({
             var provider = new firebase.auth.GoogleAuthProvider()
             firebase.auth().signInWithPopup(provider).then(function (result) {
                 context.commit('authenticated', result.user != null)
+                context.dispatch("incrementUserCount")
             }).catch(function (error) {
                 console.log('loginWithGoogle ERROR')
                 console.log(error.message)
@@ -237,6 +238,37 @@ export default new Vuex.Store({
         },
         logout(context) {
             firebase.auth().signOut().then(() => context.commit('authenticated', false))
+        },
+        /** ユーザーのログインを記録する */
+        incrementUserCount(context){
+            let user = context.state.user
+            if(!user){
+                return
+            }
+            firebase.database().ref("users/"+user.uid).once("value").then(function(snapshot){
+                // ユーザーのログインデータがない場合は作ってからやり直す
+                if(!snapshot.exists()){
+                    context.dispatch("insertUserInfo", user)
+                    context.dispatch("incrementUserCount")
+                    return
+                }
+                // カウントをインクリメントして挿入
+                let userInfo = snapshot.val();
+                userInfo.count = userInfo.count + 1
+                context.dispatch("insertUserCount",{
+                    uid: user.uid,
+                    userInfo: userInfo
+                })
+            })
+
+        },
+        /** 新規ユーザーログインデータを挿入する */
+        insertUserInfo(context, user){
+            firebase.database().ref("users/"+user.uid).set({ name: user.displayName, count: 0});
+        },
+        /** ユーザーログインデータを挿入する */
+        insertUserCount(context, payload){
+            firebase.database().ref("users/"+payload.uid).set(payload.userInfo);
         }
     }
 })

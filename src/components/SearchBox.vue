@@ -1,6 +1,6 @@
 <template>
     <div @click="closeResult()">
-        <div class="col-xl-10 col-lg-10 col-md-12 col-sm-12 col-12 mx-2 pr-1 pl-3">
+        <div class="col-xl-12 col-lg-10 col-md-12 col-sm-12 col-12 mx-2 pr-1 pl-1">
             <div id="keyword-area" class="form-group col-12 p-sm-2 p-1 my-2">
                 <label for="verb-key-word" class="d-none">keyword {{ this.test }}</label>
                 <input id="verb-key-word" class="form-control" type="text" v-model="keyWord" autocomplete="off" placeholder="keyword"
@@ -9,7 +9,7 @@
                     v-on:keydown.enter.exact="selectWord()"
                     v-on:keydown="onKeyDown()"/>
             </div>
-            <div id="result-area" class="position-absolute col-12">
+            <div id="result-area" class="position-absolute col-12 px-3">
                 <ul v-if="hasResult && this.canDisplayResult" class="list-group">
                     <li class="list-group-item p-1" :class="{'bg-dark text-white': index == selectedIndex}" v-for="(res, index) in resultList" :key="index" @touch="directSelectWord(index)" @click="directSelectWord(index)" >{{ res.word }}</li>
                 </ul>
@@ -92,6 +92,7 @@ li{
 }
 
 #result-area{
-    top: 70px;
+    top: 55px;
+    left: 1%;
 }
 </style>

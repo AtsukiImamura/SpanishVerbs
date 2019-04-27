@@ -1,0 +1,14 @@
+{
+    "rules": {
+        "users": {
+            "$uid": {
+                ".read": "$uid === auth.uid || !data.exists()",
+                ".write":"$uid === auth.uid || !data.exists()"
+        }
+        },
+        "verbs": {
+            ".read": "auth != null",
+            ".write": false
+        }
+    }
+}
