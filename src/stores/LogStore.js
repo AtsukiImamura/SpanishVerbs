@@ -31,25 +31,36 @@ export default new Vuex.Store({
     },
     actions: {
         init(context){
-            firebase.database().ref("logs/users").once("value").then(function(snapshot){
-                if(!snapshot.exists()){
-                    return
-                }
-                context.commit('userLogs', snapshot.val())
-            })
-            firebase.database().ref("logs/verbs").once("value").then(function(snapshot){
-                if(!snapshot.exists()){
-                    return
-                }
-                context.commit('verbLogs', snapshot.val())
-            })
-            firebase.database().ref("users").once("value").then(function(snapshot){
-                if(!snapshot.exists()){
-                    return
-                }
-                context.commit('users', snapshot.val())
-            })
+            try{ 
+                firebase.database().ref("logs/users").once("value").then(function(snapshot){
+                    if(!snapshot.exists()){
+                        return
+                    }
+                    context.commit('userLogs', snapshot.val())
+                })
+            }catch(e){
+                console.log('failed to fetch users log data.')
+            }
+            try{
+                firebase.database().ref("logs/verbs").once("value").then(function(snapshot){
+                    if(!snapshot.exists()){
+                        return
+                    }
+                    context.commit('verbLogs', snapshot.val())
+                })
+            }catch(e){
+                console.log('failed to fetch verbs log data.')
+            }
+            try{
+                firebase.database().ref("users").once("value").then(function(snapshot){
+                    if(!snapshot.exists()){
+                        return
+                    }
+                    context.commit('users', snapshot.val())
+                })
+            }catch(e){
+                console.log('failed to fetch users data.')
+            }
         }
-
     }
 })
