@@ -38,7 +38,7 @@ export default {
         }
     },
     mounted: function(){
-        LogStore.dispatch('init')
+        LogStore.dispatch('initUsers')
     }
 }
 </script>

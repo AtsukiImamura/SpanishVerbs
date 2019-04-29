@@ -1,11 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-// Vue.use(Vuex)
-
-const basicUtil = require('../utils/BasicUtil.js')
-const firebaseUtil = require('../utils/FirebaseUtil.js')
-
+Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
@@ -15,24 +11,42 @@ export default new Vuex.Store({
     },
     mutations: {
         userLogs(state, userLogsObj){
-            state.userLogs = Object.keys(userLogsObj).map(key => userLogsObj[key])
+            state.userLogs = Object.keys(userLogsObj).map(key => {
+                let log = userLogsObj[key]
+                log.id = key
+                return log
+            })
         },
         verbLogs(state, verbLogsObj){
-            state.verbLogs = Object.keys(verbLogsObj).map(key => verbLogsObj[key])
+            state.verbLogs = Object.keys(verbLogsObj).map(key => {
+                let log = verbLogsObj[key]
+                log.id = key
+                return log
+            })
         },
         users(state, usersObj){
             state.users = usersObj
+        },
+        deleteUserLogById(state, id){
+            state.userLogs = state.userLogs.filter(log => log.id !== id)
         }
     },
-    getters: {
-        // search: (state) => (keyword) => {
-
-        // },
-    },
     actions: {
-        init(context){
+        initUsers(context){
+            try{
+                firebase.database().ref("users").on("value", function(snapshot){
+                    if(!snapshot.exists()){
+                        return
+                    }
+                    context.commit('users', snapshot.val())
+                })
+            }catch(e){
+                console.log('failed to fetch users data.')
+            }
+        },
+        initUserLogs(context){
             try{ 
-                firebase.database().ref("logs/users").once("value").then(function(snapshot){
+                firebase.database().ref("logs/users").on("value", function(snapshot){
                     if(!snapshot.exists()){
                         return
                     }
@@ -41,8 +55,10 @@ export default new Vuex.Store({
             }catch(e){
                 console.log('failed to fetch users log data.')
             }
+        },
+        initVerbLogs(context){
             try{
-                firebase.database().ref("logs/verbs").once("value").then(function(snapshot){
+                firebase.database().ref("logs/verbs").on("value", function(snapshot){
                     if(!snapshot.exists()){
                         return
                     }
@@ -50,16 +66,6 @@ export default new Vuex.Store({
                 })
             }catch(e){
                 console.log('failed to fetch verbs log data.')
-            }
-            try{
-                firebase.database().ref("users").once("value").then(function(snapshot){
-                    if(!snapshot.exists()){
-                        return
-                    }
-                    context.commit('users', snapshot.val())
-                })
-            }catch(e){
-                console.log('failed to fetch users data.')
             }
         }
     }

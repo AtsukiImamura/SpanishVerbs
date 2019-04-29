@@ -16,10 +16,12 @@
 </template>
 
 <script>
+import MainStore from '../stores/MainStore.js'
+
 export default {
     methods: {
         login(){
-            this.$store.dispatch('loginWithGoogle');
+            MainStore.dispatch('loginWithGoogle');
         }
     }
 }

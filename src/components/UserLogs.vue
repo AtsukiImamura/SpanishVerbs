@@ -90,34 +90,59 @@
             </div>
         </div>
         <div class="mx-4">
-            <div class="d-flex justify-content-center mb-4">
-                <nav aria-label="Page navigation example" class="mx-4"  :class="{'d-none': totalPage == 1, 'd-block' : totalPage > 1}">
-                    <ul class="pagination mb-0">
-                        <li class="page-item">
-                        <a @click="previousPage()" class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        </li>
-                        <li @click="currentPage = index" class="page-item" v-for="index in totalPage"><a class="page-link"  :class="{'bg-info text-white': index == currentPage}" href="#/admin">{{ index }}</a></li>
-                        <li class="page-item">
-                        <a @click="nextPage()" class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                        </li>
-                    </ul>
-                </nav>
+            <div class="row mb-4">
+                <div class="col-3 offset-xl-1 pl-1">
+                    <input @click="deleteSelectedRecord()" type="button" class="btn btn-danger" value="delete" :class="{'disabled': selectedIndexes.length == 0}" />
+                </div>
+                <div class="col"> 
+                    <nav aria-label="Page navigation example" class="mx-4"  :class="{'d-none': totalPage == 1, 'd-block' : totalPage > 1}">
+                        <ul class="pagination mb-0">
+                            <li class="page-item">
+                            <a @click="previousPage()" class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            </li>
+                            <li @click="currentPage = index" class="page-item" v-for="index in totalPage"><a class="page-link"  :class="{'bg-info text-white': index == currentPage}" href="#/admin">{{ index }}</a></li>
+                            <li class="page-item">
+                            <a @click="nextPage()" class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
             </div>
             <div class="row">
-                <div class="pb-2 border-bottom col-xl-1 offset-xl-1 col-lg-2"><span>type</span></div>
+                <div class="pb-2 border-bottom col-xl-1 offset-xl-1 col-lg-2">
+                   <div class="row">
+                        <div class="col-4 custom-control custom-checkbox">
+                            <input @click="onAllSelectChecked()" id="select-all-record" type="checkbox" :value="true"  v-model="selectedAll" class="custom-control-input" />
+                            <label class="custom-control-label" for="select-all-record"></label>
+                        </div>
+                        <div class="col-8">
+                            <span>type</span>
+                        </div>
+                   </div>
+                </div>
                 <div class="pb-2 border-bottom col-xl-3 col-lg-4"><span>uid</span></div>
                 <div class="pb-2 border-bottom col-xl-2 col-lg-3"><span>name</span></div>
                 <div class="pb-2 border-bottom col-xl-2 col-lg-2"><span>created at</span></div>
                 <div class="pb-2 border-bottom col-xl-1 col-lg-1"><span>count</span></div>
             </div>
             <div class="row" v-for="(log,index) in pageSummaryList" :key="index">
-                <div class="border-bottom py-2 col-xl-1 offset-xl-1 col-lg-2"><span>{{ log.type }}</span></div>
+                <div class="border-bottom py-2 col-xl-1 offset-xl-1 col-lg-2">
+                    <div class="row">
+                        <div class="col-4 custom-control custom-checkbox">
+                            <input :id="'select-record-'+index" type="checkbox" class="custom-control-input"  :value="log.id" v-model="selectedIndexes" />
+                            <label class="custom-control-label" :for="'select-record-'+index"></label>
+                        </div>
+                        <div class="col-8">
+                            <span>{{ log.type }}</span>
+                        </div>
+                    </div>
+                </div>
                 <div class="border-bottom py-2 col-xl-3 col-lg-4"><span>{{ log.uid }}</span></div>
                 <div class="border-bottom py-2 col-xl-2 col-lg-3"><span>{{ log.name }}</span></div>
                 <div class="border-bottom py-2 col-xl-2 col-lg-2"><span>{{ log.count == 1 ? log.created_at : ''}}</span></div>
@@ -130,6 +155,7 @@
 <script>
 import BasicUtil from '../utils/BasicUtil.js'
 import LogUtil from '../utils/LogUtil.js'
+import FirebaseUtil from '../utils/FirebaseUtil.js'
 import LogStore from '../stores/LogStore.js'
 
 export default {
@@ -145,13 +171,12 @@ export default {
             summaryTargets: [],
             summaryTargetBase: ['type', 'uid'],
             recordPerPage: 20,
-            currentPage: 1
+            currentPage: 1,
+            selectedIndexes: [],
+            selectedAll: false
         }
     },
     methods: {
-        keywordSearch(){
-            this.searchKeyword = this.searchKeywordInput
-        },
         nextPage(){
             if(this.currentPage < this.totalPage)
             this.currentPage++
@@ -159,6 +184,28 @@ export default {
         previousPage(){
             if(this.currentPage >1)
             this.currentPage--
+        },
+        onAllSelectChecked(){
+            if(!this.selectedAll){
+                this.selectAll()
+            }else{
+                this.unselectAll()
+            }
+        },
+        selectAll(){
+            for(let log of this.pageSummaryList){
+                if(this.selectedIndexes.includes(log.id)){
+                    continue
+                }
+                this.selectedIndexes.push(log.id)
+            }
+        },
+        unselectAll(){
+            this.selectedIndexes = []
+        },
+        deleteSelectedRecord(){
+            FirebaseUtil.deleteUserLogsByIds(this.selectedIndexes)
+            this.selectedAll = false
         }
     },
     computed: {
@@ -199,6 +246,9 @@ export default {
         recordPerPage: function(val){
             this.currentPage = 1
         }
+    },
+    mounted: function(){
+        LogStore.dispatch('initUserLogs')
     }
 }
 </script>

@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import MainStore from '../stores/MainStore.js'
+
 export default {
     data: function(){
         return{
@@ -32,7 +34,7 @@ export default {
         },
         /** 候補リストを非表示にする */
         closeResult: function(){
-            this.$store.dispatch('prohibitDisplaySearchResult')
+            MainStore.dispatch('prohibitDisplaySearchResult')
         },
         /** 候補の中の現在の選択位置を下に一つ下げる */
         selectDown: function(e){
@@ -55,8 +57,8 @@ export default {
             }
             //TODO: 選択した単語を入れたい
             // this.keyWord = this.resultList[this.selectedIndex].word
-            this.$store.commit('selectWord', this.resultList[this.selectedIndex])
-            this.$store.dispatch('prohibitDisplaySearchResult')
+            MainStore.commit('selectWord', this.resultList[this.selectedIndex])
+            MainStore.dispatch('prohibitDisplaySearchResult')
             this.selectedIndex = -1
         },
         /** クリック・タッチなどで選択した場合 */
@@ -70,17 +72,17 @@ export default {
             return this.resultList.length > 0;
         },
         canDisplayResult: function(){
-            return this.$store.getters.canDisplaySearchResult;
+            return MainStore.getters.canDisplaySearchResult;
         },
         test(){
-            return this.$store.state.test
+            return MainStore.state.test
         }
     },
     watch:{
         /** 入力されたキーワードを監視して、変化があったときに候補リストを更新する */
         keyWord: function(val){
-            this.resultList = this.$store.getters.search(val)
-            this.$store.dispatch('allowDisplaySearchResult')
+            this.resultList = MainStore.getters.search(val)
+            MainStore.dispatch('allowDisplaySearchResult')
         }
     }
 }

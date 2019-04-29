@@ -80,4 +80,20 @@ module.exports = {
             deleted: 0
         })
     },
+    deleteUserLogsByIds(ids){
+        this.deleteLogsByIds('logs/users', ids)
+    },
+    deleteVerbLogsByIds(ids){
+        this.deleteLogsByIds('logs/verbs', ids)
+    },
+    deleteLogsByIds(path, ids){
+        let updates = {}
+        for(let id of ids){
+            if(!id || id == null || id === ''){
+                continue
+            }
+            updates[path+'/'+id] = null
+        }
+        firebase.database().ref().update(updates)
+    }
 }
