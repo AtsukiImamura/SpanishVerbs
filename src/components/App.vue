@@ -33,14 +33,14 @@
 </template>
 
 <script>
+import MainStore from '../stores/MainStore.js'
 import Header from './Header.vue'
 import VerbBlock from './VerbBlock.vue'
 import InitLoginForm from './InitLoginForm.vue'
-import MainStore from '../stores/MainStore.js'
 
 export default {
   components: {
-    Header,VerbBlock,InitLoginForm
+    InitLoginForm, VerbBlock, Header
   },
   mounted: function(){
     MainStore.dispatch("init")

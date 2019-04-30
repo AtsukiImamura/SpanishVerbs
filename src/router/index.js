@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import App from '../components/App.vue'
-import Admin from '../components/Admin.vue'
+const App = () => import(/* webpackChunkName: "app" */'../components/App.vue')
+const Admin = () => import(/* webpackChunkName: "admin" */'../components/Admin.vue')
 
 Vue.use(Router)
 
@@ -18,3 +18,4 @@ export default new Router({
     }
   ]
 })
+

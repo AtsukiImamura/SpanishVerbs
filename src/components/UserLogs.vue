@@ -153,10 +153,9 @@
 </template>
 
 <script>
-import BasicUtil from '../utils/BasicUtil.js'
+import LogStore from '../stores/LogStore.js'
 import LogUtil from '../utils/LogUtil.js'
 import FirebaseUtil from '../utils/FirebaseUtil.js'
-import LogStore from '../stores/LogStore.js'
 
 export default {
     data: function(){

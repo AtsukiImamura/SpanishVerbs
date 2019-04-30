@@ -1,12 +1,19 @@
 const VueLoaderplugin = require('vue-loader/lib/plugin');//vue-loader/lib/plugin
 const path = require('path')
-const enabledSourceMap = true
+const webpack = require("webpack")
+
+// ソースマップの利用有無
+const enabledSourceMap = false
 
 module.exports = {
-    entry: './src/index.js',
+    mode: 'production', // or development  productionの場合はwebpack.optimization(最適化オプション)のプラグインが有効になってビルド結果が軽くなる
+    entry: {
+        'index': './src/index.js',
+    },
     output: {
         path: path.resolve(__dirname, './dest'),
-        filename: 'bundle.js'
+        filename: '[name].bundle.js',
+        chunkFilename: '[name].bundle.js',
     },
     devServer: {
         // webpackの扱わないファイル(HTMLや画像など)が入っているディレクトリ
@@ -20,7 +27,10 @@ module.exports = {
             },
             {
                 test: /\.js/,
-                loader: 'babel-loader'
+                loader: 'babel-loader',
+                options:{
+                    plugins: ["@babel/plugin-syntax-dynamic-import"]
+                }
             },
             {
                 test: /\.css/,
@@ -67,5 +77,13 @@ module.exports = {
         }
     },
 
-    plugins: [new VueLoaderplugin()],
+    plugins: [
+        new VueLoaderplugin(),
+        /** 以下、本番用にビルドする際にコメントアウトを外す */
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: '"production"'
+            }
+        })
+    ],
 }

@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const basicUtil = require('../utils/BasicUtil.js')
 const firebaseUtil = require('../utils/FirebaseUtil.js')
 /** 検索結果候補の表示数 */
 const VERB_RESULT_NUM = 15

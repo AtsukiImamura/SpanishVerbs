@@ -5,7 +5,7 @@ module.exports = {
     /** dateを 'yyyy-mm-dd hh-ii-ss' 形式に変換する */
     getFormatDate(date){
         let month = date.getMonth()+1
-        let day = date.getDay()
+        let day = date.getDate()
         let hour = date.getHours();
         let minute = date.getMinutes()
         let second = date.getSeconds()

@@ -13,6 +13,7 @@
 </template>
 
 <script>
+// const MainStore = () => import(/* webpackChunkName: "main-store" */)
 import MainStore from '../stores/MainStore.js'
 
 export default {
