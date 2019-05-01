@@ -4,7 +4,7 @@
     <Header></Header>
     <div id="main-contents" class="d-flex justify-content-center">
       <div class="mt-0 pt-3 mx-xl-2 mx-lg-3 mx-md-2 mx-sm-2 ml-1 mr-2 px-2">
-        <router-link to="/config" class="d-none">Config</router-link>
+        <router-link to="/admin" class="d-none">Admin</router-link>
         <div class="row" :class="{'d-none':this.selectWord(0) === ''}">
           <h3 class="col-md-3 col-lg-2 col-12">{{ this.selectWord(0) }}</h3>
           <div class="col-md-3 col-lg-2 col-6">
@@ -33,28 +33,29 @@
 </template>
 
 <script>
+import MainStore from '../stores/MainStore.js'
 import Header from './Header.vue'
 import VerbBlock from './VerbBlock.vue'
 import InitLoginForm from './InitLoginForm.vue'
 
 export default {
   components: {
-    Header,VerbBlock,InitLoginForm
+    InitLoginForm, VerbBlock, Header
   },
   mounted: function(){
-    this.$store.dispatch("init")
+    MainStore.dispatch("init")
   },
   computed: {
     selectedWordHeader: function(){
-      return this.$store.state.selectedVerbList.filter(v => v.type == 10)
+      return MainStore.state.selectedVerbList.filter(v => v.type == 10)
     },
     isAuthenticated(){
-      return this.$store.state.authenticated
+      return MainStore.state.authenticated
     }
   },
   methods: {
     hideSearchResults(){
-      this.$store.dispatch('prohibitDisplaySearchResult')
+      MainStore.dispatch('prohibitDisplaySearchResult')
     },
     selectWord(person){
       let words = this.selectedWordHeader.filter(v => v.person == person)

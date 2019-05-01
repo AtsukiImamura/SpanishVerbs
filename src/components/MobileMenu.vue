@@ -27,7 +27,8 @@
     </div>
 </template>
 
-<<script>
+<script>
+import MainStore from '../stores/MainStore.js'
 export default {
     data: function(){
         return {
@@ -38,8 +39,8 @@ export default {
     computed: {
         userAuthenticated(){
             // 直接取得するとなぜか循環参照になってしまうので、userAuthenticatedで逐一判断することにした
-            this.user = this.$store.state.user
-            return this.$store.state.authenticated
+            this.user = MainStore.state.user
+            return MainStore.state.authenticated
         },
         userDispName(){
             return this.user ? this.user.displayName : ''
@@ -50,10 +51,10 @@ export default {
     },
     methods: {
         login(){
-            this.$store.dispatch('loginWithGoogle');
+            MainStore.dispatch('loginWithGoogle');
         },
         logout(){
-            this.$store.dispatch('logout');
+            MainStore.dispatch('logout');
         },
         openMobileMenu(){
             this.isOpen = true

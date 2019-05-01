@@ -13,6 +13,9 @@
 </template>
 
 <script>
+// const MainStore = () => import(/* webpackChunkName: "main-store" */)
+import MainStore from '../stores/MainStore.js'
+
 export default {
     props: ['title', 'type','colorClass'],
     data: function(){
@@ -21,10 +24,10 @@ export default {
     },
     computed: {
         selectedVerb: function(){
-            return this.$store.state.selectedVerb
+            return MainStore.state.selectedVerb
         },
         wordList: function(){
-            return this.$store.state.selectedVerbList.filter(v => v.type == this.type)
+            return MainStore.state.selectedVerbList.filter(v => v.type == this.type)
                                         .map(v => {
                                             switch(v.person){
                                                 case 0:

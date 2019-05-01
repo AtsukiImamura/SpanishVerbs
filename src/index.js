@@ -1,17 +1,32 @@
-import Vue from 'vue';
-
-import App from './components/App.vue';
-import store from './stores/MainStore.js';
-import router from './router/index.js'
-
-import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-Vue.use(BootstrapVue)
 
-new Vue({
+const App = () => import(/* webpackChunkName: "app" */'./components/App.vue')
+var router = null
+var BootstrapVue = null
+var Vue = null
+
+import(/* webpackChunkName: "router" */'./router/index.js')
+  .then(({default: _router}) => {
+    router = _router
+    return import(/* webpackChunkName: "bootstrap" */'bootstrap-vue')
+  })
+  .then(({default: _bootstrap}) => {
+    BootstrapVue = _bootstrap
+    return import(/* webpackChunkName: "vue" */'vue')
+  })
+  .then(({default: _vue}) => {
+    Vue = _vue
+    initVue()
+  })
+
+function initVue(){
+  Vue.use(BootstrapVue)
+  new Vue({
     el: '#app',
     router,
-    store,
     components: { App },
   })
+}
+
+

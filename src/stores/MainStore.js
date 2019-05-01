@@ -3,60 +3,11 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const firebaseUtil = require('../utils/FirebaseUtil.js')
 /** 検索結果候補の表示数 */
 const VERB_RESULT_NUM = 15
 
 const testVerbs = [
-	{word_id: 1,type: 0,person: 0,word: "abandono"}, 
-	{word_id: 1,type: 0,person: 1,word: "abandonas"}, 
-	{word_id: 1,type: 0,person: 2,word: "abandona"}, 
-	{word_id: 1,type: 0,person: 3,word: "abandonamos"}, 
-	{word_id: 1,type: 0,person: 4,word: "abandonáis"}, 
-	{word_id: 1,type: 0,person: 5,word: "abandonan"}, 
-	{word_id: 1,type: 1,person: 0,word: "abandoné"}, 
-	{word_id: 1,type: 1,person: 1,word: "abandonaste"}, 
-	{word_id: 1,type: 1,person: 2,word: "abandonó"}, 
-	{word_id: 1,type: 1,person: 3,word: "abandonamos"}, 
-	{word_id: 1,type: 1,person: 4,word: "abandonasteis"}, 
-	{word_id: 1,type: 1,person: 5,word: "abandonaron"}, 
-	{word_id: 1,type: 2,person: 0,word: "abandonaba"}, 
-	{word_id: 1,type: 2,person: 1,word: "abandonabas"}, 
-	{word_id: 1,type: 2,person: 2,word: "abandonaba"}, 
-	{word_id: 1,type: 2,person: 3,word: "abandonábamos"}, 
-	{word_id: 1,type: 2,person: 4,word: "abandonabais"}, 
-	{word_id: 1,type: 2,person: 5,word: "abandonaban"}, 
-	{word_id: 1,type: 3,person: 0,word: "abandonaré"}, 
-	{word_id: 1,type: 3,person: 1,word: "abandonarás"}, 
-	{word_id: 1,type: 3,person: 2,word: "abandonará"}, 
-	{word_id: 1,type: 3,person: 3,word: "abandonaremos"}, 
-	{word_id: 1,type: 3,person: 4,word: "abandonaréis"}, 
-	{word_id: 1,type: 3,person: 5,word: "abandonarán"}, 
-	{word_id: 1,type: 4,person: 0,word: "abandonaría"}, 
-	{word_id: 1,type: 4,person: 1,word: "abandonarías"}, 
-	{word_id: 1,type: 4,person: 2,word: "abandonaría"}, 
-	{word_id: 1,type: 4,person: 3,word: "abandonaríamos"}, 
-	{word_id: 1,type: 4,person: 4,word: "abandonaríais"}, 
-	{word_id: 1,type: 4,person: 5,word: "abandonarían"}, 
-	{word_id: 1,type: 5,person: 0,word: "abandona"}, 
-	{word_id: 1,type: 5,person: 1,word: "abandone"}, 
-	{word_id: 1,type: 5,person: 2,word: "abandonemos"}, 
-	{word_id: 1,type: 5,person: 3,word: "abandonad"}, 
-	{word_id: 1,type: 5,person: 4,word: "abandonen"}, 
-	{word_id: 1,type: 6,person: 0,word: "abandone"}, 
-	{word_id: 1,type: 6,person: 1,word: "abandones"}, 
-	{word_id: 1,type: 6,person: 2,word: "abandone"}, 
-	{word_id: 1,type: 6,person: 3,word: "abandonemos"}, 
-	{word_id: 1,type: 6,person: 4,word: "abandonéis"}, 
-	{word_id: 1,type: 6,person: 5,word: "abandonen"}, 
-	{word_id: 1,type: 7,person: 0,word: "abandonara"}, 
-	{word_id: 1,type: 7,person: 1,word: "abandonaras"}, 
-	{word_id: 1,type: 7,person: 2,word: "abandonara"}, 
-	{word_id: 1,type: 7,person: 3,word: "abandonáramos"}, 
-	{word_id: 1,type: 7,person: 4,word: "abandonarais"}, 
-	{word_id: 1,type: 7,person: 5,word: "abandonaran"}, 
-	{word_id: 1,type: 10,person: 0,word: "abandonar"}, 
-	{word_id: 1,type: 10,person: 1,word: "abandonando"}, 
-	{word_id: 1,type: 10,person: 2,word: "abandonado"}, 
 	{word_id: 6,type: 0,person: 0,word: "aborrezco"}, 
 	{word_id: 6,type: 0,person: 1,word: "aborreces"}, 
 	{word_id: 6,type: 0,person: 2,word: "aborrece"}, 
@@ -111,35 +62,47 @@ const testVerbs = [
 
 export default new Vuex.Store({
     state: {
-        verbs: [], //testVerbs,
+        verbs: [],
         canDisplaySearchResult: true,
         selectedVerb: {word_id: 6,type: 0,person: 4,word: "aborrecéis"},
         selectedVerbList: testVerbs.filter(v => v.word_id == 6),
         user: null,
-        authenticated: false
+        authenticated: false,
+        searchVerbs: [],
+        keywordCache: [],
+        selectedWordIdCache: []
     },
     mutations: {
-        /* 動詞リストを初期化する */
-        initVerbs(state, list){
-            state.verbs = list
-        },
         allowDisplaySearchResult(state){
             state.canDisplaySearchResult = true
         },
         prohibitDisplaySearchResult(state){
             state.canDisplaySearchResult = false
         },
-        /** 単語を選択する */
-        selectWord(state, verb){
-            let id = verb.word_id
-            state.selectedVerb = verb
-            state.selectedVerbList = state.verbs.filter(v => v.word_id == id)
-        },
         setUser(state, user){
             state.user = user
         },
         authenticated(state, val){
             state.authenticated = val
+        },
+        pushSearchVerbs(state, verbs){
+            let uniqueVerbs = state.verbs
+                            .concat(verbs)
+                            .reduce((a, v) => {
+                                let key = v.word_id+'-'+v.type+'-'+v.person
+                                if(!a[key]){
+                                    a[key] = v
+                                }
+                                return a
+                            }, {})
+            state.verbs = Object.keys(uniqueVerbs).map(key => uniqueVerbs[key])
+            state.searchVerbs = verbs
+        },
+        clearSearchVerbs(state){
+            state.searchVerbs = []
+        },
+        cacheKeyword(state, keyword){
+            state.keywordCache.push[keyword]
         }
     },
     getters: {
@@ -167,24 +130,63 @@ export default new Vuex.Store({
         }
     },
     actions: {
-        init(context){
-            context.dispatch('initUserInfo')
-        },
-        /** 動詞リストを全件取得して保持する TODO: firebaseのクエリがいい感じになったらその都度検索するようにしたい */
-        initVerbs(context){
-            // dbアクセスして全権取得
-            firebase.database().ref("verbs").once("value").then(function(snapshot){
-                if(!snapshot.exists()){
-                    return
-                }
-                context.commit('initVerbs', snapshot.val())
-            })
-        },
-        initVerbsIfNot(context){
-            if(context.state.verbs.length > 0){
+        /** 単語を選択する */
+        selectWord(context, verb){
+            context.state.selectedVerb = verb
+            firebaseUtil.logSearchVerb(context.state.user, verb)
+            
+            let target_id = verb.word_id
+
+            // キャッシュされているword idの場合はキャッシュされた単語リストから取得
+            if(context.state.selectedWordIdCache.includes(target_id)){
+                context.state.selectedVerbList = context.state.verbs.filter(v => v.word_id == target_id)
                 return
             }
-            context.dispatch('initVerbs')
+            // キャッシュ
+            context.state.selectedWordIdCache.push(target_id)
+
+            firebase.database().ref("verbs")
+                .orderByChild("word_id")
+                .startAt(target_id)
+                .endAt(target_id)
+                .once("value")
+                .then(function(snapshot){
+                    if(!snapshot.exists()){
+                        return
+                    }
+                    let verbsObj = snapshot.val()
+                    let verbList = Object.keys(verbsObj).map(key => verbsObj[key])
+                    context.state.selectedVerbList = verbList
+                    // キャッシュ
+                    context.commit('pushSearchVerbs', verbList)
+                })
+        },
+        search(context, key){
+            if(key.trim() === ''){
+                context.commit('prohibitDisplaySearchResult')
+                return
+            }
+            if(context.state.keywordCache.includes[key.trim()]){
+                context.commit('pushSearchVerbs', context.getters.search(key.trim()))
+                return
+            }
+            context.commit('clearSearchVerbs')
+            firebase.database().ref("verbs")
+                .orderByChild("word")
+                .startAt(key.trim())
+                .limitToFirst(VERB_RESULT_NUM)
+                .once("value")
+                .then(function(snapshot){
+                    if(!snapshot.exists()){
+                        return
+                    }
+                    let verbsObj = snapshot.val()
+                    context.commit('pushSearchVerbs', Object.keys(verbsObj).map(key => verbsObj[key]))
+                })
+        },
+        init(context){
+            context.dispatch('initUserInfo')
+            firebaseUtil.logAccess()
         },
         /** 検索結果候補リストの表示を許可する */
         allowDisplaySearchResult(context){
@@ -198,10 +200,12 @@ export default new Vuex.Store({
         initUserInfo(context){
             firebase.auth().onAuthStateChanged(function(user) {
                 context.commit('setUser', user)
-                if(!user) return
-                context.dispatch('initVerbsIfNot')
+                if(!user) {
+                    return
+                }
                 context.commit('authenticated', true)
-                context.dispatch("incrementUserCount")
+                firebaseUtil.incrementUserCount(context.state.user)
+                firebaseUtil.logUserLogin(user)
             })
         },
         /** 認証されているか */
@@ -218,38 +222,8 @@ export default new Vuex.Store({
             })
         },
         logout(context) {
+            firebaseUtil.logUserLogout(context.state.user)
             firebase.auth().signOut().then(() => context.commit('authenticated', false))
         },
-        /** ユーザーのログインを記録する */
-        incrementUserCount(context){
-            let user = context.state.user
-            if(!user){
-                return
-            }
-            firebase.database().ref("users/"+user.uid).once("value").then(function(snapshot){
-                // ユーザーのログインデータがない場合は作ってからやり直す
-                if(!snapshot.exists()){
-                    context.dispatch("insertUserInfo", user)
-                    context.dispatch("incrementUserCount")
-                    return
-                }
-                // カウントをインクリメントして挿入
-                let userInfo = snapshot.val();
-                userInfo.count = userInfo.count + 1
-                context.dispatch("insertUserCount",{
-                    uid: user.uid,
-                    userInfo: userInfo
-                })
-            })
-
-        },
-        /** 新規ユーザーログインデータを挿入する */
-        insertUserInfo(context, user){
-            firebase.database().ref("users/"+user.uid).set({ name: user.displayName, count: 0});
-        },
-        /** ユーザーログインデータを挿入する */
-        insertUserCount(context, payload){
-            firebase.database().ref("users/"+payload.uid).set(payload.userInfo);
-        }
     }
 })

@@ -22,13 +22,17 @@
 
 <script>
 
-import SearchBox from './SearchBox.vue';
-import UserInfoBox from './UserInfoBox.vue';
-import MobileMenu from './MobileMenu.vue';
-import Title from './Title.vue';
+import SearchBox from './SearchBox.vue'
+import UserInfoBox from './UserInfoBox.vue'
+import MobileMenu from './MobileMenu.vue'
+import Title from './Title.vue'
 
 export default {
     components:{
+        // SearchBox: () => import(/* webpackChunkName: "search-box" */'./SearchBox.vue'),
+        // UserInfoBox: () => import(/* webpackChunkName: "user-info-box" */'./UserInfoBox.vue'),
+        // MobileMenu: () => import(/* webpackChunkName: "mobile-menu" */'./MobileMenu.vue'),
+        // Title: () => import(/* webpackChunkName: "title" */'./Title.vue')
         SearchBox, UserInfoBox, MobileMenu, Title
     },
 }
