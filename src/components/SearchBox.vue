@@ -25,7 +25,6 @@ export default {
     data: function(){
         return{
             keyWord: '',
-            resultList: [],
             selectedIndex: -1
         }
     },
@@ -56,8 +55,7 @@ export default {
                 return;
             }
             //TODO: 選択した単語を入れたい
-            // this.keyWord = this.resultList[this.selectedIndex].word
-            MainStore.commit('selectWord', this.resultList[this.selectedIndex])
+            MainStore.dispatch('selectWord', this.resultList[this.selectedIndex])
             MainStore.dispatch('prohibitDisplaySearchResult')
             this.selectedIndex = -1
         },
@@ -76,12 +74,15 @@ export default {
         },
         test(){
             return MainStore.state.test
+        },
+        resultList(){
+            return MainStore.state.searchVerbs
         }
     },
     watch:{
         /** 入力されたキーワードを監視して、変化があったときに候補リストを更新する */
         keyWord: function(val){
-            this.resultList = MainStore.getters.search(val)
+            MainStore.dispatch('search', val)
             MainStore.dispatch('allowDisplaySearchResult')
         }
     }

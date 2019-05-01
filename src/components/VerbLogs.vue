@@ -8,11 +8,7 @@
                         <div class="row">
                             <div class="col-4 pr-1">
                                 <select class="custom-select mr-sm-2" id="order-selection" v-model="keywordSearchTarget" >
-                                    <option value="uid">uid</option>
-                                    <option value="word_id">word id</option>
-                                    <option value="type" selected>type</option>
-                                    <option value="person">person</option>
-                                    <option value="word">word</option>
+                                    <option v-for="(target, index) in ['uid', 'word_id', 'type', 'person', 'word']" :value="target" :selected="target === keywordSearchTarget">{{ target }}</option>
                                 </select>
                             </div>
                             <div class="col-8 pl-1">
@@ -25,13 +21,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <select class="custom-select mr-sm-2" id="verb-order-selection" v-model="sortBy" >
-                                    <option value="uid" selected>uid</option>
-                                    <option value="word_id">word id</option>
-                                    <option value="type">type</option>
-                                    <option value="person">person</option>
-                                    <option value="word">word</option>
-                                    <option value="created_at">created at</option>
-                                    <option value="count">count</option>
+                                    <option v-for="(target, index) in ['uid', 'word_id', 'type','person', 'word', 'created_at', 'count']" :value="target" :selected="target == sortBy">{{ target }}</option>
                                 </select>
                             </div>
                             <div class="col-4  custom-control custom-checkbox">
@@ -55,30 +45,16 @@
                     <div class="col-xl-4 col-lg-5">
                         <label for="type-selection" class="text-info">summary target</label>
                         <div id="type-selection" class="row">
-                            <div class="col custom-control custom-checkbox ml-3">
-                                <input id="verb-summary-target-uid" type="checkbox" value="uid" v-model="summaryTargets" class="custom-control-input" />
-                                <label class="custom-control-label" for="verb-summary-target-uid">uid</label>
-                            </div>
-                            <div class="col custom-control custom-checkbox">
-                                <input id="summary-target-word-id" type="checkbox" value="word_id" v-model="summaryTargets" class="custom-control-input" />
-                                <label class="custom-control-label" for="summary-target-word-id">word id</label>
-                            </div>
-                            <div class="col custom-control custom-checkbox">
-                                <input id="verb-summary-target-type" type="checkbox" value="type" v-model="summaryTargets" class="custom-control-input" />
-                                <label class="custom-control-label" for="verb-summary-target-type">type</label>
-                            </div>
-                            <div class="col custom-control custom-checkbox">
-                                <input id="summary-target-person" type="checkbox" value="person" v-model="summaryTargets" class="custom-control-input" />
-                                <label class="custom-control-label" for="summary-target-person">person</label>
+                            <div class="col custom-control custom-checkbox ml-3" v-for="(target, index) in ['uid', 'word_id', 'type', 'person']" :key="index">
+                                <input :id="'summary-target-'+target" type="checkbox" :value="target" v-model="summaryTargets" class="custom-control-input" />
+                                <label class="custom-control-label" :for="'summary-target-'+target">{{ target }}</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-2 col-lg-3">
                         <label for="verb-record-per-page" class="text-info">record per page</label>
                         <select class="custom-select mr-sm-2" id="verb-record-per-page" v-model="recordPerPage" >
-                            <option value="20" selected>20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
+                            <option :value="num" v-for="num in [20, 50, 100]">{{ num }}</option>
                         </select>
                     </div>
                 </div>

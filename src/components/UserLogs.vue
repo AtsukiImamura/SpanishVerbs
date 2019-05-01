@@ -8,10 +8,7 @@
                         <div class="row">
                             <div class="col-4 pr-1">
                                 <select class="custom-select mr-sm-2" id="order-selection" v-model="keywordSearchTarget" >
-                                    <option value="type" selected>type</option>
-                                    <option value="uid">uid</option>
-                                    <option value="name">name</option>
-                                    <option value="count">count</option>
+                                    <option v-for="(target, index) in ['type', 'uid', 'name', 'count']" :value="target" :selected="target === keywordSearchTarget">{{ target }}</option>
                                 </select>
                             </div>
                             <div class="col-8 pl-1">
@@ -22,17 +19,9 @@
                     <div class="col-xl-4 col-lg-5 col-md-6">
                         <label for="type-selection" class="text-info">type</label>
                         <div id="type-selection" class="row">
-                            <div class="col custom-control custom-checkbox ml-3">
-                                <input id="select-access" type="checkbox" value="0" v-model="dispTypes" class="custom-control-input" />
-                                <label class="custom-control-label" for="select-access">access</label>
-                            </div>
-                            <div class="col custom-control custom-checkbox">
-                                <input id="select-login" type="checkbox" value="10" v-model="dispTypes" class="custom-control-input" />
-                                <label class="custom-control-label" for="select-login">login</label>
-                            </div>
-                            <div class="col custom-control custom-checkbox">
-                                <input id="select-logout" type="checkbox" value="20" v-model="dispTypes" class="custom-control-input" />
-                                <label class="custom-control-label" for="select-logout">logout</label>
+                            <div class="col custom-control custom-checkbox ml-3" v-for="(type, index) in dispTypeSelection">
+                                <input id="select-access" type="checkbox" :value="type.code" v-model="dispTypes" class="custom-control-input" />
+                                <label class="custom-control-label" for="select-access">{{ type.name }}</label>
                             </div>
                         </div>
                     </div>
@@ -41,10 +30,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <select class="custom-select mr-sm-2" id="order-selection" v-model="sortBy" >
-                                    <option value="type" selected>type</option>
-                                    <option value="uid">uid</option>
-                                    <option value="name">name</option>
-                                    <option value="created_at">created at</option>
+                                    <option v-for="(target, index) in ['type', 'uid', 'name','created_at']" :value="target" :selected="target == sortBy">{{ target }}</option>
                                 </select>
                             </div>
                             <div class="col-4  custom-control custom-checkbox">
@@ -68,22 +54,16 @@
                     <div class="col-xl-4 col-lg-5">
                         <label for="type-selection" class="text-info">summary target</label>
                         <div id="type-selection" class="row">
-                            <div class="col custom-control custom-checkbox ml-3">
-                                <input id="summary-target-type" type="checkbox" value="type" v-model="summaryTargets" class="custom-control-input" />
-                                <label class="custom-control-label" for="summary-target-type">type</label>
+                            <div class="col custom-control custom-checkbox ml-3" v-for="(target, index) in ['type', 'uid']" :key="index">
+                                <input :id="'summary-target-'+target" type="checkbox" :value="target" v-model="summaryTargets" class="custom-control-input" />
+                                <label class="custom-control-label" :for="'summary-target-'+target">{{ target }}</label>
                             </div>
-                            <div class="col custom-control custom-checkbox">
-                                <input id="summary-target-uid" type="checkbox" value="uid" v-model="summaryTargets" class="custom-control-input" />
-                                <label class="custom-control-label" for="summary-target-uid">uid</label>
-                            </div> 
                         </div>
                     </div>
                     <div class="col-xl-2 col-lg-3">
                         <label for="record-per-page" class="text-info">record per page</label>
                         <select class="custom-select mr-sm-2" id="record-per-page" v-model="recordPerPage" >
-                            <option value="20" selected>20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
+                            <option :value="num" v-for="num in [20, 50, 100]">{{ num }}</option>
                         </select>
                     </div>
                 </div>
@@ -161,6 +141,7 @@ export default {
     data: function(){
         return {
             dispTypes: [0,10,20],
+            dispTypeSelection: [{code:0, name:'access'},{code:20, name:'login'},{code:30, name:'logout'}],
             sortBy: 'created_at',
             orderAsc: false,
             keywordSearchTarget: 'type',
