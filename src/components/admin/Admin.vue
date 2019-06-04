@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import LogStore from '../stores/LogStore.js'
-import UserLogs from './UserLogs.vue'
-import VerbLogs from './VerbLogs.vue'
+import LogStore from '../../stores/LogStore.js'
+import UserLogs from './logs/UserLogs.vue'
+import VerbLogs from './logs/VerbLogs.vue'
 
 export default {
     components: {

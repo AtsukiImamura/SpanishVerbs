@@ -22,7 +22,7 @@
 
 <script>
 
-import SearchBox from './SearchBox.vue'
+import SearchBox from './verbs/SearchBox.vue'
 import UserInfoBox from './UserInfoBox.vue'
 import MobileMenu from './MobileMenu.vue'
 import Title from './Title.vue'

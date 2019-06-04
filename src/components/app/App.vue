@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import MainStore from '../stores/MainStore.js'
+import MainStore from '../../stores/MainStore.js'
 import Header from './Header.vue'
-import VerbBlock from './VerbBlock.vue'
+import VerbBlock from './verbs/VerbBlock.vue'
 import InitLoginForm from './InitLoginForm.vue'
 
 export default {

@@ -14,7 +14,7 @@
 
 <script>
 // const MainStore = () => import(/* webpackChunkName: "main-store" */)
-import MainStore from '../stores/MainStore.js'
+import MainStore from '../../../stores/MainStore.js'
 
 export default {
     props: ['title', 'type','colorClass'],

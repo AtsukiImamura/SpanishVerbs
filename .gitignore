@@ -38,6 +38,7 @@ jspm_packages/
 
 # bundle file output
 dest/
+*.bundle.js
 
 # TypeScript v1 declaration files
 typings/

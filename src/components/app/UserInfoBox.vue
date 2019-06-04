@@ -17,7 +17,7 @@
 
 
 <script>
-import MainStore from '../stores/MainStore.js'
+import MainStore from '../../stores/MainStore.js'
 
 export default {
     data: function(){
