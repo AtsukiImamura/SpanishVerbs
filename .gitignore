@@ -37,8 +37,7 @@ node_modules/
 jspm_packages/
 
 # bundle file output
-dest/
-*.bundle.js
+dist/*.js
 
 # TypeScript v1 declaration files
 typings/

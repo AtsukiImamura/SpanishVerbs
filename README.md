@@ -34,4 +34,5 @@ npm run build
 
 ## TODO
 - package.jsonの整理
+- typescriptを使うようにしたい
 
