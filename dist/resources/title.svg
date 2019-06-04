@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="276" height="54" viewBox="0 0 276 54">
+	<linearGradient id="g-fill" gradientTransform="rotate(90)">
+            <stop offset="0" stop-color="#ffc080"/>
+            <stop offset="1" stop-color="#b02000"/>
+    </linearGradient>
+	<text x="0" y="48" font-family="Verdana" font-size="38" fill="url(#g-fill)">Spanish Verbs</text>
+</svg>
