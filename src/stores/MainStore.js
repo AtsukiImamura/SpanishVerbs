@@ -67,7 +67,7 @@ export default new Vuex.Store({
         selectedVerb: {word_id: 6,type: 0,person: 4,word: "aborrecéis"},
         selectedVerbList: testVerbs.filter(v => v.word_id == 6),
         user: null,
-        authenticated: false,
+        authenticated: true,
         searchVerbs: [],
         keywordCache: [],
         selectedWordIdCache: []

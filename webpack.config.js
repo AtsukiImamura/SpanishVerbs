@@ -1,9 +1,10 @@
 const VueLoaderplugin = require("vue-loader/lib/plugin"); //vue-loader/lib/plugin
 const path = require("path");
 const webpack = require("webpack");
+const HardSource = require("hard-source-webpack-plugin");
 
 // ソースマップの利用有無
-const enabledSourceMap = false;
+const enabledSourceMap = true;
 
 module.exports = {
   mode: "production", // or development  productionの場合はwebpack.optimization(最適化オプション)のプラグインが有効になってビルド結果が軽くなる
@@ -27,10 +28,11 @@ module.exports = {
       },
       {
         test: /\.js/,
-        loader: "babel-loader",
+        loader: "babel-loader?cacheDirectory",
         options: {
           plugins: ["@babel/plugin-syntax-dynamic-import"]
-        }
+        },
+        exclude: /node_modules/
       },
       {
         test: /\.css/,
@@ -79,13 +81,16 @@ module.exports = {
     }
   },
 
+  cache: true,
+
   plugins: [
     new VueLoaderplugin(),
+    new HardSource()
     /** 以下、本番用にビルドする際にコメントアウトを外す */
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: '"production"'
-      }
-    })
+    // new webpack.DefinePlugin({
+    //   "process.env": {
+    //     NODE_ENV: '"production"'
+    //   }
+    // })
   ]
 };
